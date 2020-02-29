@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Test</title>
+
+		<script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+	</head>
+	<body>
+		<a-scene>
+            <!-- Game Assets -->
+            <a-assets>
+                <img id="cage" src="Nicolas-Cage.jpg">
+				<img id="grass-7x1" src="images/grass-7x1.png">
+				<img id="angry" src="images/angry.jpg">
+            </a-assets>
+
+			<!-- Camera and Motion Controllers -->
+			<a-entity id="camera-rig">
+				<a-entity id="camera" camera position="0 1.6 0" look-controls wasd-controls rotation="0 0 0" position-display camera-listener>
+					<!-- Text -->
+					<a-entity id="title-text" position="0 1.25 -3" text="align: center; value: Dodge the Reacts!; width: 6; side: double;"></a-entity>
+					<a-entity id="sub-text" position="0 1.25 -4" text="align: center; value: ; width: 5; side: double;" text-display></a-entity>
+					<a-entity visible="false" id="position-text" position="0 -3 -3" text="align: center; value: Rotation; width: 10; side: double;"></a-entity>
+					<a-entity visible="false" id="thumbstick-text" position="0 -3.5 -3" text="align: center; value: Thumbstick; width: 10; side: double;"></a-entity>
+				</a-entity>
+				<a-entity windows-motion-controls="hand: left" move ></a-entity>
+				<a-entity windows-motion-controls="hand: right" move id="rightHand" hand-controls="right" mixin="controller"></a-entity>
+			</a-entity>
+
+			<!-- Base Plane (Playing Field) -->
+            <a-plane position="0 0 0" rotation="-90 0 0" width="5" height="5" src="#cage" repeat></a-plane>
+
+            <!-- Raised Edges -->
+            <a-plane position="0 0.35 2.85" rotation="-135 0 0" width="7" height="1" src="#cage" repeat></a-plane>
+            <a-plane position="0 0.35 -2.85" rotation="-45 0 0" width="7" height="1" src="#cage" repeat></a-plane>
+            <a-plane position="2.85 0.35 0" rotation="-45 -90 0" width="7" height="1" src="#cage" repeat></a-plane>
+            <a-plane position="-2.85 0.35 0" rotation="-45 90 0" width="7" height="1" src="#cage" repeat></a-plane>
+
+            <!-- Elevated Edges (Spawn Points) -->
+            <a-plane position="0 0.7 3.71" rotation="-90 0 0" width="7" height="1" src="#cage" repeat></a-plane>
+            <a-plane position="0 0.7 -3.71" rotation="-90 0 0" width="7" height="1" src="#cage" repeat></a-plane>
+            <a-plane position="3.71 0.7 0" rotation="-90 90 0" width="7" height="1" src="#cage" repeat></a-plane>
+            <a-plane position="-3.71 0.7 0" rotation="-90 90 0" width="7" height="1" src="#cage" repeat></a-plane>
+
+            <!-- Sky -->
+			<a-sky color="#87ceeb"></a-sky>
+			
+			<!-- Enemies -->
+			<a-entity generate-enemies id="enemies"></a-entity>
+
+			<!-- Enemy design -->
+			<a-entity id="enemy" visible="false">
+				<a-sphere position="0 1 0" color="white" rotation="180 0 180" radius="0.3" src="#angry"></a-sphere>
+				<a-cone position="0 0.7 0" color="white" radius-bottom="0.2" height="0.5"></a-cone>
+			</a-entity>
+		</a-scene>
+	</body>
+</html>
