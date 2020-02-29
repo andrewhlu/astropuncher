@@ -15,6 +15,7 @@
 				<img id="space" src="images/space.jpg">
 				<img id="door" src="images/blastdoor.png">
 				<img id="panel" src="images/sidepanel.jpg">
+				<img id="floor" src="images/floor.jpg">
             </a-assets>
 
 			<!-- Camera and Motion Controllers -->
@@ -32,14 +33,14 @@
 			</a-entity>
 
 			<!-- Base Plane (Playing Field) -->
-            <a-plane position="-10 0 0" rotation="-90 0 0" width="5" height="5" color="gray" repeat></a-plane>
+            <a-plane position="-10 0 0" rotation="-90 0 0" width="5" height="5" src="#floor" repeat></a-plane>
 
-            <a-plane position="0 0 0" rotation="-90 0 0" width="5" height="5" color="gray" repeat></a-plane>
+            <a-plane position="0 0 0" rotation="-90 0 0" width="5" height="5" src="#floor" repeat></a-plane>
 
             <!-- Walls -->
 			<a-plane position="-5 1 2.5" rotation="-180 0 0" width="15" height="2" src="#panel" repeat></a-plane>
 			<a-plane position="-5 1 -2.5" rotation="0 0 0" width="15" height="2" src="#panel" repeat></a-plane>
-			<a-plane position="2.5 1 0" rotation="0 -90 0" width="5" height="2" src="#door" repeat></a-plane>
+			<a-plane position="2.5 1 0" rotation="0 -90 0" width="5" height="2" src="#dosor" repeat></a-plane>
 			<a-plane position="-12.5 1 0" rotation="0 90 0" width="5" height="2" src="#door" repeat></a-plane>
 			<a-plane position="-5 0.25 0" rotation="0 90 0" width="5" height="0.5" color="white" repeat></a-plane>
 			<a-plane position="-5 0.25 0" rotation="0 -90 0" width="5" height="0.5" color="white" repeat></a-plane>
