@@ -35,8 +35,17 @@ function handleTouchEnd(evt) {
 
 function displayBox(xUp, yUp, xDown, yDown) {
     var box = document.getElementById("draw-box");
-    box.style.height = Math.abs(yUp - yDown) + "px";
-    box.style.width = Math.abs(xUp - xDown) + "px";
+    box.style.height = "1px";
+    box.style.width = (Math.pow(Math.pow(Math.abs(yUp - yDown),2) + Math.pow(Math.abs(xUp - xDown),2)),0.5) + "px";
     box.style.top = Math.min(yUp, yDown) + "px";
     box.style.left = Math.min(xUp, xDown) + "px";
+    box.style.transform = "rotate("+ Math.tan(Math.abs(xUp - xDown)/Math.abs(yUp - yDown))"deg)";
+
+    if(xUp - xDown < 0) {
+        box.style.transformOrigin = "bottom right";
+    }
+
+    else {
+        box.style.transformOrigin = "bottom left";
+    }
 }
