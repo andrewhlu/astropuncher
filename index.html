@@ -13,6 +13,7 @@
 				<img id="grass-7x1" src="images/grass-7x1.png">
 				<img id="angry" src="images/angry.jpg">
 				<img id="space" src="images/space.jpg">
+				<img id="door" src="images/blastdoor.png">
             </a-assets>
 
 			<!-- Camera and Motion Controllers -->
@@ -37,8 +38,10 @@
             <!-- Walls -->
 			<a-plane position="-5 1 2.5" rotation="-180 0 0" width="15" height="2" color="blue" repeat></a-plane>
 			<a-plane position="-5 1 -2.5" rotation="0 0 0" width="15" height="2" color="blue" repeat></a-plane>
-			<a-plane position="2.5 1 0" rotation="0 -90 0" width="5" height="2" color="gold" repeat></a-plane>
-			<a-plane position="-12.5 1 0" rotation="0 90 0" width="5" height="2" color="gold" repeat></a-plane>
+			<a-plane position="2.5 1 0" rotation="0 -90 0" width="5" height="2" src="#door" repeat></a-plane>
+			<a-plane position="-12.5 1 0" rotation="0 90 0" width="5" height="2" src="#door" repeat></a-plane>
+			<a-plane position="-5 0.25 0" rotation="0 90 0" width="5" height="0.5" color="white" repeat></a-plane>
+			<a-plane position="-5 0.25 0" rotation="0 -90 0" width="5" height="0.5" color="white" repeat></a-plane>
 
             <!-- Raised Edges -->
             <!-- 
