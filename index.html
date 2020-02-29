@@ -19,6 +19,7 @@
 				<a-entity id="camera" camera position="0 1.6 0" look-controls wasd-controls rotation="0 0 0" position-display camera-listener>
 					<!-- Text -->
 					<a-entity id="title-text" position="0 1.25 -3" text="align: center; value: Dodge the Reacts!; width: 6; side: double;"></a-entity>
+					<a-entity id="health-ui" position="0 2 -3" text="align: center; value: test; width: 6; side: double;"></a-entity>
 					<a-entity id="sub-text" position="0 1.25 -4" text="align: center; value: ; width: 5; side: double;" text-display></a-entity>
 					<a-entity visible="false" id="position-text" position="0 -3 -3" text="align: center; value: Rotation; width: 10; side: double;"></a-entity>
 					<a-entity visible="false" id="thumbstick-text" position="0 -3.5 -3" text="align: center; value: Thumbstick; width: 10; side: double;"></a-entity>
@@ -51,7 +52,7 @@
             <a-plane position="-3.71 0.7 0" rotation="-90 90 0" width="7" height="1" src="#cage" repeat></a-plane> -->
 
             <!-- Sky -->
-			<a-sky color="#87ceeb"></a-sky>
+			<a-sky color="#1a001a"></a-sky>
 			
 			<!-- Enemies -->
 			<a-entity generate-enemies id="enemies"></a-entity>
