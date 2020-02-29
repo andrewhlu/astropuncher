@@ -22,7 +22,7 @@ function handleTouchMove(evt) {
     var xUp = evt.touches[0].clientX;
     var yUp = evt.touches[0].clientY;
 
-    displayBox(xUp, yUp, xDown, yDown);
+    displayLine(xUp, yUp, xDown, yDown);
 }
 
 function handleTouchEnd(evt) {
@@ -30,22 +30,20 @@ function handleTouchEnd(evt) {
     var yUp = evt.changedTouches[0].clientY;
     
     document.getElementById("swipe-info").innerHTML = "Touch end<br>Start - X: " + xDown + ", Y: " + yDown + "<br>End - X: " + xUp + ", Y: " + yUp;
-    displayBox(xUp, yUp, xDown, yDown);
+    displayLine(xUp, yUp, xDown, yDown);
 }
 
-function displayBox(xUp, yUp, xDown, yDown) {
-    var box = document.getElementById("draw-box");
-    box.style.height = "1px";
-    box.style.width = (Math.pow(Math.pow(Math.abs(yUp - yDown),2) + Math.pow(Math.abs(xUp - xDown),2)),0.5) + "px";
-    box.style.top = Math.min(yUp, yDown) + "px";
-    box.style.left = Math.min(xUp, xDown) + "px";
-    box.style.transform = "rotate("+ Math.tan(Math.abs(xUp - xDown)/Math.abs(yUp - yDown))"deg)";
+function displayLine(xUp, yUp, xDown, yDown) {
+    var box = document.getElementById("touch-line");
+    box.style.width = "0px";
+    box.style.height = yDown - yUp > 0 ? getLength(xUp, yUp, xDown, yDown) + "px" : "0px";
+    box.style.top = yDown - getLength(xUp, yUp, xDown, yDown) + "px";
+    box.style.left = xDown + "px";
+    box.style.transformOrigin = "bottom right";
+    box.style.transform = "rotate(" + Math.atan((xUp - xDown)/(yDown - yUp)) * 180 / Math.PI + "deg)";
+}
 
-    if(xUp - xDown < 0) {
-        box.style.transformOrigin = "bottom right";
-    }
-
-    else {
-        box.style.transformOrigin = "bottom left";
-    }
+function getLength(x1, y1, x2, y2) {
+    // Returns the distance between two X and Y coordinates
+    return Math.pow(Math.pow(Math.abs(y1 - y2),2) + Math.pow(Math.abs(x1 - x2),2),0.5);
 }
