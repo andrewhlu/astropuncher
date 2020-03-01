@@ -9,7 +9,7 @@ const firebaseConfig = {
     appId: "1:937961984218:web:6b7fd909cd26eb868755e3",
     measurementId: "G-7YHG475TJB"
 };
-const team = "green";
+var team = "none";
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -23,18 +23,27 @@ document.addEventListener('touchend', handleTouchEnd, false);
 var xDown = null;
 var yDown = null;
 
-function toggleDebugMode() {
-    var debugDiv = document.getElementById("debug-div");
-    if(debugDiv.getAttribute("hidden") === null) {
-        debugDiv.setAttribute("hidden", true);
-    }
-    else {
-        debugDiv.removeAttribute("hidden");
-    }
+function joinTeam(color) {
+    team = color;
+    document.getElementById("intro-div").setAttribute("hidden", true);
+    document.getElementById("game-div").removeAttribute("hidden");
+    document.getElementById("play-area").classList.add("team-" + color);
+
+    // Set up Firebase Database listeners
+    database.ref("/" + team + "/health").on("value", (snapshot) => {
+        var health = snapshot.val();
+        document.getElementById("current-health").style.height = window.innerHeight * ((100 - health) / 100) + "px";
+        document.getElementById("health-counter").innerHTML = health;
+    });
+    
+    database.ref("/" + team + "/energy").on("value", (snapshot) => {
+        var energy = snapshot.val();
+        document.getElementById("current-energy").style.height = window.innerHeight * ((100 - energy) / 100) + "px";
+        document.getElementById("energy-counter").innerHTML = energy;
+    });
 }
 
 function checkValidLine(xUp, yUp, xDown, yDown) {
-    displayError("checkValidLine: " + checkIfInElement(xDown, yDown, "play-area") + ", " + checkIfInElement(xUp, yUp, "block-area") + ", " + checkIfInElement(xUp, yUp, "play-area"));
     return checkIfInElement(xDown, yDown, "play-area") && (checkIfInElement(xUp, yUp, "block-area") || checkIfInElement(xUp, yUp, "play-area"));
 }
 
@@ -52,8 +61,6 @@ function handleTouchStart(evt) {
     const firstTouch = evt.touches[0];
     xDown = firstTouch.clientX;
     yDown = firstTouch.clientY;
-
-    document.getElementById("swipe-info").innerHTML = "Touch start";
 }
 
 function handleTouchMove(evt) {
@@ -68,8 +75,6 @@ function handleTouchMove(evt) {
 function handleTouchEnd(evt) {
     var xUp = evt.changedTouches[0].clientX;
     var yUp = evt.changedTouches[0].clientY;
-    
-    document.getElementById("swipe-info").innerHTML = "Touch end<br>Start - X: " + xDown + ", Y: " + yDown + "<br>End - X: " + xUp + ", Y: " + yUp;
 
     if(checkValidLine(xUp, yUp, xDown, yDown)) {
         displayLine(xUp, yUp, xDown, yDown);
@@ -149,15 +154,3 @@ function getEnergyUsage(xUp, yUp, xDown, yDown) {
         return Math.floor(45 * ((length - 100) / 400) + 5);
     }
 }
-
-database.ref("/" + team + "/health").on("value", (snapshot) => {
-    var health = snapshot.val();
-    document.getElementById("current-health").style.height = window.innerHeight * ((100 - health) / 100) + "px";
-    document.getElementById("health-counter").innerHTML = health;
-});
-
-database.ref("/" + team + "/energy").on("value", (snapshot) => {
-    var energy = snapshot.val();
-    document.getElementById("current-energy").style.height = window.innerHeight * ((100 - energy) / 100) + "px";
-    document.getElementById("energy-counter").innerHTML = energy;
-});

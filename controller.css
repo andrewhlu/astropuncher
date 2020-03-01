@@ -43,22 +43,22 @@ hr {
 .bar {
     position: fixed;
     top: 0;
-    width: 60px;
+    width: 80px;
     height: 100vh;
 }
 
 .bar p {
     position: fixed;
-    top: calc(50vh - 10px);
-    width: 60px;
+    top: calc(50vh - 25px);
+    width: 80px;
     text-align: center;
     color: white;
-    font-size: 20px;
+    font-size: 25px;
     font-family: "Avenir";
 }
 
 .bar .inner {
-    width: 60px;
+    width: 80px;
     background-color: grey;
 }
 
@@ -84,14 +84,14 @@ hr {
 
 /* White Box */
 .center-content-box {
-	width: 500px;
+	width: 600px;
 	position: absolute;
-	left: calc((100vw - 500px) / 2);
+	left: calc((100vw - 600px) / 2);
 	text-align: center;
 }
 
 .center-content-box h1 {
-	margin-top: 150px;
+	margin-top: 100px;
 	margin-bottom: 100px;
 	font-size: 300%;
 }
@@ -102,16 +102,23 @@ hr {
 }
 
 .white-trans-bg button {
-	margin: 1em;
+	margin: 0.5em;
 	width: 400px;
 	height: 50px;
 	font-size: 20px;
 	border: none;
 	border-radius: 10px;
     text-align: center;
-    background-color: #3cb371;
     color: #fff;
     font-family: "Avenir";
+}
+
+.team-green {
+    background-color: #70AD47;
+}
+
+.team-purple {
+    background-color: #924DA7;
 }
 
 .line {
@@ -138,7 +145,6 @@ hr {
 
 .play-area {
     height: 100px;
-    background: #70AD47;
     opacity: 0.5;
 }
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Spawn the Reacts!</title>
+    <title>AstroPuncher</title>
 
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14,39 +14,49 @@
     <link rel= "stylesheet" href= "controller.css">
 </head>
 <body>
-    <!-- <button type="button" class="debug-button" onclick="toggleDebugMode();">Toggle Debug Mode</button> -->
-    <div id="debug-div" class="center-content-box" hidden>
-        <h1>Shoot the enemies!</h1>
+    <div id="intro-div" class="center-content-box">
+        <h1>Shoot asteroids to destroy the enemy ship!</h1>
 
         <div class="white-trans-bg">
-            <h3 id="swipe">It will show up here.</h3>
-            <p id="swipe-info">Debug information will show up here.</p>
+            <h3>Captain! Your ship is under attack!</h3>
+
+            <p>You must defend your ship at all costs! Your ship mate is outside defending incoming asteroids. But you must launch your own to attack the enemy!</p>
+            <p>Swipe up from the Play Area to launch asteroids at the enemy ship. But keep in mind that the ship can only generate so much power at once!</p>
+            <p>Stronger asteroids (longer swipes) consume more energy.</p>
+            <p>You are also in a battlefield where asteroids can bounce off walls! Use that to your advantage.</p>
+            <br>
+            <h3>Are you ready, captain? Select your team below.</h3>
+
+            <button type="button" class="team-green" onclick="joinTeam('green');">Team Green</button>
+            <button type="button" class="team-purple" onclick="joinTeam('purple');">Team Purple</button>
         </div>
     </div>
 
-    <div class="bar health-bar">
-        <div id="current-health" class="bar inner"></div>
-        <p id="health-counter">--</p>
-    </div>
-
-    <div class="bar energy-bar">
-        <div id="current-energy" class="bar inner"></div>
-        <p id="energy-counter">--</p>
-    </div>
-
-    <div class="game-board-div">
-        <div id="block-area" class="block-area">
-            <img src="images/floor.jpg" alt="Floor" />
+    <div id="game-div" hidden>
+        <div class="bar health-bar">
+            <div id="current-health" class="bar inner"></div>
+            <p><i class="fas fa-heart"></i><br><span id="health-counter">--</span></p>
         </div>
-
-        <div id="play-area" class="play-area">
-            <h1>PLAY AREA</h1>
-        </div>
-
-        <h3 id="error-message"></h3>
-    </div>
     
-    <div class="line" id="touch-line" style="width: 0; height: 0; left: 0; top: 0;"></div>
+        <div class="bar energy-bar">
+            <div id="current-energy" class="bar inner"></div>
+            <p><i class="fas fa-bolt"></i><br><span id="energy-counter">--</span></p>
+        </div>
+    
+        <div class="game-board-div">
+            <div id="block-area" class="block-area">
+                <img src="images/floor.jpg" alt="Floor" />
+            </div>
+    
+            <div id="play-area" class="play-area">
+                <h1>PLAY AREA</h1>
+            </div>
+    
+            <h1 id="error-message"></h1>
+        </div>
+        
+        <div class="line" id="touch-line" style="width: 0; height: 0; left: 0; top: 0;"></div>
+    </div>
 
     <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
