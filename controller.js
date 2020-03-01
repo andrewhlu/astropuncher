@@ -53,7 +53,7 @@ function joinTeam(color) {
     database.ref("/" + team + "/health").on("value", (snapshot) => {
         var health = snapshot.val();
         document.getElementById("current-health").style.height = window.innerHeight * ((100 - health) / 100) + "px";
-        document.getElementById("health-counter").innerHTML = health;
+        document.getElementById("health-counter").innerHTML = Math.floor(health);
         if(health <= 0) {
             document.getElementById("game-div").setAttribute("hidden", true);
             document.getElementById("failure-div").removeAttribute("hidden");
@@ -63,7 +63,7 @@ function joinTeam(color) {
     database.ref("/" + team + "/energy").on("value", (snapshot) => {
         var energy = snapshot.val();
         document.getElementById("current-energy").style.height = window.innerHeight * ((100 - energy) / 100) + "px";
-        document.getElementById("energy-counter").innerHTML = energy;
+        document.getElementById("energy-counter").innerHTML = Math.floor(energy);
     });
 
     // Check for win condition

@@ -97,7 +97,7 @@ function initializeGame() {
     // Display your health
     database.ref("/" + team + "/health").on("value", (snapshot) => {
         var health = snapshot.val();
-        subText.setAttribute("text", {value: "Health: " + health + "%"});
+        subText.setAttribute("text", {value: "Health: " + Math.floor(health) + "%"});
 
         if(health <= 0) {
             titleText.setAttribute("text", {value: "Mission Failed!"});
@@ -111,6 +111,25 @@ function initializeGame() {
             titleText.setAttribute("text", {value: "Mission Success!"});
         }
     });
+
+    // Increase health and energy every second
+    setInterval(() => {
+        database.ref("/" + team).once("value", (snapshot) => {
+            var stats = snapshot.val();
+            var updates = {};
+            if(stats.health < 100) {
+                updates["health"] = stats.health + 0.5;
+            }
+            if(stats.energy < 100) {
+                updates["energy"] = (stats.energy + 2 + stats.blocks) > 100 ? 100 : (stats.energy + 2 + stats.blocks);
+            }
+            database.ref("/" + team).update(updates, (error) => {
+                if(error) {
+                    console.log(error);
+                }
+            })
+        });
+    }, 1000);
 
     // Set up your team's asteroids
     database.ref("/" + team + "/asteroidSpawns").on("value", (snapshot) => {
