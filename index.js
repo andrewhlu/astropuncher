@@ -344,10 +344,13 @@ function initializeGame() {
         setTimeout(() => {
             asteroidEntity.removeChild(newAsteroid);
         
-            database.ref("/" + team + "/health").once("value", (snapshot) => {
-                var health = snapshot.val();
-                health -= 10;
-                database.ref("/" + team + "/health").set(health, (error) => {
+            database.ref("/" + team).once("value", (snapshot) => {
+                var stats = snapshot.val();
+                var updates = {};
+                updates["health"] = stats.health - 10 - Math.pow(stats.hits, 2);
+                updates["hits"] = stats.hits + 1;
+                updates["blocks"] = 0;
+                database.ref("/" + team).update(updates, (error) => {
                     if(error) {
                         console.log(error);
                     }
@@ -366,15 +369,22 @@ AFRAME.registerComponent("green-asteroid", {
             var asteroidInterval = window.setInterval(() => {
                 var asteroidPosition = asteroid.object3D.position;
     
-                if(Math.abs(asteroidPosition.x - leftHandPos.x) < threshold && Math.abs(asteroidPosition.z - leftHandPos.z) < threshold) {
-                    console.log("Hit a green asteroid! Left Hand");
+                if ((Math.abs(asteroidPosition.x - leftHandPos.x) < threshold && Math.abs(asteroidPosition.z - leftHandPos.z) < threshold) || 
+                    (Math.abs(asteroidPosition.x - rightHandPos.x) < threshold && Math.abs(asteroidPosition.z - rightHandPos.z) < threshold))
+                {
                     clearInterval(asteroidInterval);
                     asteroid.parentNode.removeChild(asteroid);
-                }
-                else if(Math.abs(asteroidPosition.x - rightHandPos.x) < threshold && Math.abs(asteroidPosition.z - rightHandPos.z) < threshold) {
-                    console.log("Hit a green asteroid! Right Hand");
-                    clearInterval(asteroidInterval);
-                    asteroid.parentNode.removeChild(asteroid);
+                    database.ref("/" + team + "/blocks").once("value", (snapshot) => {
+                        var blocks = snapshot.val();
+                        var updates = {};
+                        updates["blocks"] = blocks + 1;
+                        updates["hits"] = 0;
+                        database.ref("/" + team).update(updates, (error) => {
+                            if(error) {
+                                console.log(error);
+                            }
+                        })
+                    });
                 }
             }, 100);
         }
@@ -390,15 +400,22 @@ AFRAME.registerComponent("purple-asteroid", {
             var asteroidInterval = window.setInterval(() => {
                 var asteroidPosition = asteroid.object3D.position;
     
-                if(Math.abs(asteroidPosition.x - leftHandPos.x) < threshold && Math.abs(asteroidPosition.z - leftHandPos.z) < threshold) {
-                    console.log("Hit a purple asteroid! Left Hand");
+                if ((Math.abs(asteroidPosition.x - leftHandPos.x) < threshold && Math.abs(asteroidPosition.z - leftHandPos.z) < threshold) || 
+                    (Math.abs(asteroidPosition.x - rightHandPos.x) < threshold && Math.abs(asteroidPosition.z - rightHandPos.z) < threshold))
+                {
                     clearInterval(asteroidInterval);
                     asteroid.parentNode.removeChild(asteroid);
-                }
-                else if(Math.abs(asteroidPosition.x - rightHandPos.x) < threshold && Math.abs(asteroidPosition.z - rightHandPos.z) < threshold) {
-                    console.log("Hit a purple asteroid! Right Hand");
-                    clearInterval(asteroidInterval);
-                    asteroid.parentNode.removeChild(asteroid);
+                    database.ref("/" + team + "/blocks").once("value", (snapshot) => {
+                        var blocks = snapshot.val();
+                        var updates = {};
+                        updates["blocks"] = blocks + 1;
+                        updates["hits"] = 0;
+                        database.ref("/" + team).update(updates, (error) => {
+                            if(error) {
+                                console.log(error);
+                            }
+                        })
+                    });
                 }
             }, 100);
         }
