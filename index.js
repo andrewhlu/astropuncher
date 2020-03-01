@@ -10,7 +10,7 @@ const firebaseConfig = {
     measurementId: "G-7YHG475TJB"
 };
 
-var team = "green";
+var team = "none";
 
 var leftHandPos = {};
 var rightHandPos = {};
@@ -19,6 +19,62 @@ var rightHandPos = {};
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 
+// Setup universal game components
+AFRAME.registerComponent("left-hand", {
+    init: function() {
+        console.log("Initialized left hand");
+
+        this.el.addEventListener("triggerdown", (event) => {
+            if(team === "none") {
+                team = "green";
+                console.log("Joined green team");
+
+                var subText = document.querySelector("#sub-text");
+                subText.setAttribute("text", {value: "Joined Green Team"});
+                setTimeout(() => {
+                    subText.setAttribute("visible", false);
+                }, 5000);
+            }
+        });
+    },
+    tick: function() {
+        leftHandPos =  this.el.getAttribute("position");
+    }
+});
+
+AFRAME.registerComponent("right-hand", {
+    init: function() {
+        console.log("Initialized right hand");
+
+        this.el.addEventListener("triggerdown", (event) => {
+            if(team === "none") {
+                team = "purple";
+                console.log("Joined purple team");
+
+                var subText = document.querySelector("#sub-text");
+                subText.setAttribute("text", {value: "Joined Purple Team"});
+                setTimeout(() => {
+                    subText.setAttribute("visible", false);
+                }, 5000);
+            }
+        });
+    },
+    tick: function() {
+        rightHandPos =  this.el.getAttribute("position");
+    }
+});
+
+AFRAME.registerComponent("text-display", {
+    init: function() {
+        this.el.setAttribute("text", {
+            value: "Press the left trigger to join the Green team.     Press the right trigger to join the Purple team."
+        });
+    }
+});
+
+
+
+// Setup team specific game components once a team has been selected
 AFRAME.registerComponent('generate-asteroids', {
     init: function() {
         let asteroidEntity = this.el;
@@ -173,28 +229,3 @@ AFRAME.registerComponent("green-asteroid", {
     }
 });
 
-AFRAME.registerComponent("left-hand", {
-    init: function() {
-        console.log("Initialized left hand");
-    },
-    tick: function() {
-        leftHandPos =  this.el.getAttribute("position");
-    }
-});
-
-AFRAME.registerComponent("right-hand", {
-    init: function() {
-        console.log("Initialized right hand");
-    },
-    tick: function() {
-        rightHandPos =  this.el.getAttribute("position");
-    }
-});
-
-// AFRAME.registerComponent("text-display", {
-//     tick: function() {
-//         this.el.setAttribute("text", {
-//             value: "Left: X: " + parseFloat(leftHandPos.x).toFixed(2) + ", Y: " + parseFloat(leftHandPos.y).toFixed(2) + ", Z: " + parseFloat(leftHandPos.z).toFixed(2)
-//         });
-//     }
-// })
