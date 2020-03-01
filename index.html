@@ -20,16 +20,18 @@
 
 			<!-- Camera and Motion Controllers -->
 			<a-entity id="camera-rig">
-				<a-entity id="camera" camera position="0 1.6 0" look-controls wasd-controls rotation="0 0 0" position-display camera-listener>
+				<a-entity id="camera" camera position="0 1.6 0" look-controls wasd-controls rotation="0 -90 0" position-display camera-listener>
 					<!-- Text -->
-					<a-entity id="title-text" position="0 1.25 -3" text="align: center; value: Dodge the Reacts!; width: 6; side: double;"></a-entity>
+					<a-entity id="title-text" position="0 1.25 -3" text="align: center; value: Dodge the Asteroids!; width: 6; side: double;"></a-entity>
 					<a-entity id="health-ui" position="0 2.3 -3" text="align: center; value: 3/3; width: 6; side: double;"></a-entity>
 					<a-entity id="sub-text" position="0 1.25 -4" text="align: center; value: ; width: 5; side: double;" text-display></a-entity>
 					<a-entity visible="false" id="position-text" position="0 -3 -3" text="align: center; value: Rotation; width: 10; side: double;"></a-entity>
 					<a-entity visible="false" id="thumbstick-text" position="0 -3.5 -3" text="align: center; value: Thumbstick; width: 10; side: double;"></a-entity>
 				</a-entity>
-				<a-entity windows-motion-controls="hand: left" move ></a-entity>
-				<a-entity windows-motion-controls="hand: right" move id="rightHand" hand-controls="right" mixin="controller"></a-entity>
+				<a-entity windows-motion-controls="hand: left" move id="leftHandWMR" hand-controls="left" mixin="controller"></a-entity>
+				<a-entity windows-motion-controls="hand: right" move id="rightHandWMR" hand-controls="right" mixin="controller"></a-entity>
+				<a-entity vive-controls="hand: left" move id="leftHandVive" hand-controls="left" mixin="controller"></a-entity>
+				<a-entity vive-controls="hand: right" move id="rightHandVive" hand-controls="right" mixin="controller"></a-entity>
 			</a-entity>
 
 			<!-- Base Plane (Playing Field) -->

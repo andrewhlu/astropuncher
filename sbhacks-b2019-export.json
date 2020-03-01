@@ -1,0 +1,22 @@
+{
+  "green" : {
+    "blocks" : 0,
+    "energy" : 100,
+    "health" : 100,
+    "hits" : 0,
+    "position" : {
+      "x" : 0,
+      "z" : 0
+    }
+  },
+  "purple" : {
+    "blocks" : 0,
+    "energy" : 100,
+    "health" : 100,
+    "hits" : 0,
+    "position" : {
+      "x" : 0,
+      "z" : 0
+    }
+  }
+}

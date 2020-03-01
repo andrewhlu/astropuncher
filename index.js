@@ -119,7 +119,7 @@ AFRAME.registerComponent('generate-asteroids', {
             newAsteroid.setAttribute("position", position);
             newAsteroid.setAttribute("rotation", rotation);
             newAsteroid.setAttribute("visible", true);
-            newAsteroid.setAttribute("asteroid", true);
+            newAsteroid.setAttribute("green-asteroid", true);
             for(var i = 0; i < animations.length; i++) {
                 newAsteroid.setAttribute('animation' + (i > 0 ? '__' + i : ''), animations[i]);
             }
