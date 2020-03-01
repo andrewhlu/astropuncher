@@ -125,7 +125,7 @@ function displayLine(xUp, yUp, xDown, yDown) {
     box.style.top = yDown - getLength(xUp, yUp, xDown, yDown) + "px";
     box.style.left = xDown + "px";
     box.style.transformOrigin = "bottom right";
-    box.style.transform = "rotate(" + getAngle(xUp, yUp, xDown, yDown) + "deg)";
+    box.style.transform = "rotate(" + getAngle(xUp, yUp, xDown, yDown) + "rad)";
 }
 
 function getLength(x1, y1, x2, y2) {
@@ -134,7 +134,7 @@ function getLength(x1, y1, x2, y2) {
 }
 
 function getAngle(xUp, yUp, xDown, yDown) {
-    return Math.atan((xUp - xDown)/(yDown - yUp)) * 180 / Math.PI;
+    return Math.atan((xUp - xDown)/(yDown - yUp));
 }
 
 function getEnergyUsage(xUp, yUp, xDown, yDown) {
