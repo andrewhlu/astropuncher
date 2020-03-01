@@ -49,17 +49,9 @@ AFRAME.registerComponent("left-hand", {
                 team = "green";
                 console.log("Joined green team");
 
-                var subText = document.querySelector("#sub-text");
-                subText.setAttribute("text", {value: "Joined Green Team"});
-
-                initializeEnemyGeneration();
-
                 document.querySelector("#home-play-area").setAttribute("color", "#70AD47");
                 document.querySelector("#enemy-play-area").setAttribute("color", "#924DA7");
-
-                setTimeout(() => {
-                    subText.setAttribute("visible", false);
-                }, 5000);
+                initializeGame();
             }
         });
     },
@@ -77,17 +69,9 @@ AFRAME.registerComponent("right-hand", {
                 team = "purple";
                 console.log("Joined purple team");
 
-                var subText = document.querySelector("#sub-text");
-                subText.setAttribute("text", {value: "Joined Purple Team"});
-
-                initializeEnemyGeneration();
-
                 document.querySelector("#home-play-area").setAttribute("color", "#924DA7");
                 document.querySelector("#enemy-play-area").setAttribute("color", "#70AD47");
-
-                setTimeout(() => {
-                    subText.setAttribute("visible", false);
-                }, 5000);
+                initializeGame();
             }
         });
     },
@@ -105,8 +89,28 @@ AFRAME.registerComponent("text-display", {
 });
 
 // Setup team specific game components once a team has been selected
-function initializeEnemyGeneration() {
+function initializeGame() {
     let asteroidEntity = document.querySelector("#asteroids");
+    let titleText = document.querySelector("#title-text");
+    let subText = document.querySelector("#sub-text");
+
+    // Display your health
+    database.ref("/" + team + "/health").on("value", (snapshot) => {
+        var health = snapshot.val();
+        subText.setAttribute("text", {value: "Health: " + health + "%"});
+
+        if(health <= 0) {
+            titleText.setAttribute("text", {value: "Mission Failed!"});
+        }
+    });
+
+    // Check for win condition
+    database.ref("/" + getOtherTeam() + "/health").on("value", (snapshot) => {
+        var health = snapshot.val();
+        if(health <= 0) {
+            titleText.setAttribute("text", {value: "Mission Success!"});
+        }
+    });
 
     // Set up your team's asteroids
     database.ref("/" + team + "/asteroidSpawns").on("value", (snapshot) => {
