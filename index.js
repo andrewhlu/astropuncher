@@ -27,11 +27,10 @@ AFRAME.registerComponent('generate-asteroids', {
 
             // Starting position and rotation for alien
             var position = {
-                x: 0,
+                x: 2,
                 y: 0.5,
                 z: 2.5 - 5*(asteroidData.position)
             };
-            console.log(position);
 
             var rotation = {
                 x: 0,
@@ -45,17 +44,9 @@ AFRAME.registerComponent('generate-asteroids', {
             newAlien.setAttribute("rotation", rotation);
             newAlien.setAttribute('visible', true);
 
-            asteroidEntity.appendChild(newAlien);
-            console.log("Spawned new alien");
-
-            setTimeout(() => {
-                asteroidEntity.removeChild(newAlien);
-            }, 3000);
-
             // Asteroid Spawn
             var fSpeed = Math.cos(asteroidData.angle);
             var sSpeed = Math.sin(asteroidData.angle);
-            console.log("fSpeed: " + fSpeed + ", sSpeed: " + sSpeed);
 
             var points = [];
             var fDistance = 0;
@@ -63,8 +54,6 @@ AFRAME.registerComponent('generate-asteroids', {
             while(fDistance < 14) {
                 // Remember, moving right is equal to negative Z, and moving forward is equal to negative X!
                 var unitsToMove = sSpeed > 0 ? (2.5 - sDistance) / sSpeed : (2.5 + sDistance) / sSpeed * -1;
-                console.log("unitsToMove: " + unitsToMove);
-                if(unitsToMove < 0) {break;}
                 if(unitsToMove * fSpeed + fDistance >= 14) {
                     // We will reach the back wall before reaching the side
                     unitsToMove = (14 - fDistance) / fSpeed;
@@ -81,7 +70,6 @@ AFRAME.registerComponent('generate-asteroids', {
                         x: position.x - (fSpeed * unitsToMove) - fDistance,
                         z: sSpeed * unitsToMove + sDistance
                     };
-                    console.log("sSpeed * unitsToMove: " + sSpeed * unitsToMove + ", sDistance: " + sDistance);
                     fDistance += (fSpeed * unitsToMove);
                     sDistance = nextPoint.z;
                     sSpeed *= -1;
@@ -89,9 +77,7 @@ AFRAME.registerComponent('generate-asteroids', {
                 }
             }
 
-            console.log(points);
-
-            var time = 5000;
+            var time = 1000;
             var animations = [
                 {
                     property: "position",
@@ -129,8 +115,6 @@ AFRAME.registerComponent('generate-asteroids', {
                 time += 2000;
             }
 
-            console.log(animations);
-
             let newAsteroid = document.getElementById('asteroid').cloneNode(true);
             newAsteroid.setAttribute("position", position);
             newAsteroid.setAttribute("rotation", rotation);
@@ -139,12 +123,26 @@ AFRAME.registerComponent('generate-asteroids', {
             for(var i = 0; i < animations.length; i++) {
                 newAsteroid.setAttribute('animation' + (i > 0 ? '__' + i : ''), animations[i]);
             }
-            
+            asteroidEntity.appendChild(newAlien);
             asteroidEntity.appendChild(newAsteroid);
 
             setTimeout(() => {
+                asteroidEntity.removeChild(newAlien);
+            }, 3000);
+
+            setTimeout(() => {
                 asteroidEntity.removeChild(newAsteroid);
-            }, time + 50000);
+
+                database.ref("/green/health").once("value", (snapshot) => {
+                    var health = snapshot.val();
+                    health -= 10;
+                    database.ref("/green/health").set(health, (error) => {
+                        if(error) {
+                            console.log(error);
+                        }
+                    })
+                })
+            }, time);
         });
     }
 });

@@ -9,8 +9,8 @@
 		<a-scene>
             <!-- Game Assets -->
             <a-assets>
-				<img id="alien-green" src="images/alien.jpg">
-				<img id="alien-purple" src="images/alienpurple.jpg">
+				<img id="alien-green-pic" src="images/alien.jpg">
+				<img id="alien-purple-pic" src="images/alienpurple.jpg">
 				<img id="space" src="images/space.jpg">
 				<img id="door" src="images/blastdoor.png">
 				<img id="panel" src="images/sidepanel.jpg">
@@ -66,18 +66,18 @@
 			
 			<!-- Asteroid Design -->
 			<a-entity id="asteroid" visible="false">
-				<a-sphere position="4 1 4" radius="0.25" src="images/asteroid.jpg"></a-sphere>
+				<a-sphere position="0 0.5 0" radius="0.25" src="images/asteroid.jpg"></a-sphere>
 			</a-entity>
                 
 			<!-- Green Alien Design -->
 			<a-entity id="alien-green" visible="false">
-				<a-sphere position="0 1 0" color="white" rotation="180 0 180" radius="0.3" src="#alien-green"></a-sphere>
+				<a-sphere position="0 1 0" color="white" rotation="180 0 180" radius="0.3" src="#alien-green-pic"></a-sphere>
 				<a-cone position="0 0.7 0" color="#70AD47" radius-bottom="0.2" height="0.5"></a-cone>
             </a-entity>
 			
 			<!-- Purple Alien Design -->
 			<a-entity id="alien-purple" visible="false">
-				<a-sphere position="0 1 0" color="white" rotation="180 0 180" radius="0.3" src="#alien-purple"></a-sphere>
+				<a-sphere position="0 1 0" color="white" rotation="180 0 180" radius="0.3" src="#alien-purple-pic"></a-sphere>
 				<a-cone position="0 0.7 0" color="#924DA7" radius-bottom="0.2" height="0.5"></a-cone>
 			</a-entity>
         </a-scene>
