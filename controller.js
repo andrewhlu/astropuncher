@@ -11,9 +11,29 @@ const firebaseConfig = {
 };
 var team = "none";
 
+// Function to get the other team
+function getOtherTeam() {
+    if (team === "green") {
+        return "purple";
+    }
+    else if(team === "purple") {
+        return "green";
+    }
+    else {
+        return "none";
+    }
+}
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
+
+// Set reset state to false
+database.ref("/reset").set(false, (error) => {
+    if(error) {
+        console.log(error);
+    }
+});
 
 // Set up event listeners for touch events
 document.addEventListener('touchstart', handleTouchStart, false);
@@ -34,12 +54,25 @@ function joinTeam(color) {
         var health = snapshot.val();
         document.getElementById("current-health").style.height = window.innerHeight * ((100 - health) / 100) + "px";
         document.getElementById("health-counter").innerHTML = health;
+        if(health <= 0) {
+            document.getElementById("game-div").setAttribute("hidden", true);
+            document.getElementById("failure-div").removeAttribute("hidden");
+        }
     });
     
     database.ref("/" + team + "/energy").on("value", (snapshot) => {
         var energy = snapshot.val();
         document.getElementById("current-energy").style.height = window.innerHeight * ((100 - energy) / 100) + "px";
         document.getElementById("energy-counter").innerHTML = energy;
+    });
+
+    // Check for win condition
+    database.ref("/" + getOtherTeam() + "/health").on("value", (snapshot) => {
+        var health = snapshot.val();
+        if(health <= 0) {
+            document.getElementById("game-div").setAttribute("hidden", true);
+            document.getElementById("success-div").removeAttribute("hidden");
+        }
     });
 }
 
@@ -156,9 +189,43 @@ function getEnergyUsage(xUp, yUp, xDown, yDown) {
 }
 
 // Remote Refresh
-database.ref("/refresh").on("value", (snapshot) => {
+database.ref("/reset").on("value", (snapshot) => {
     var status = snapshot.val();
     if(status) {
         location.reload();
     }
-})
+});
+
+// Reset Game
+const resetState = {
+    "green" : {
+        "blocks" : 0,
+        "energy" : 100,
+        "health" : 100,
+        "hits" : 0,
+        "position" : {
+            "x" : 0,
+            "z" : 0
+        }
+    },
+    "purple" : {
+        "blocks" : 0,
+        "energy" : 100,
+        "health" : 100,
+        "hits" : 0,
+        "position" : {
+            "x" : 0,
+            "z" : 0
+        }
+    },
+    "reset" : true
+};
+
+function resetGame() {
+    database.ref("/").set(resetState, (error) => {
+        if(error) {
+            console.log(error);
+        }
+    });
+}
+  

@@ -32,6 +32,13 @@ function getOtherTeam() {
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 
+// Set reset state to false
+database.ref("/reset").set(false, (error) => {
+    if(error) {
+        console.log(error);
+    }
+});
+
 // Setup universal game components
 AFRAME.registerComponent("left-hand", {
     init: function() {
@@ -393,3 +400,44 @@ AFRAME.registerComponent("purple-asteroid", {
         }
     }
 });
+
+// Remote Refresh
+database.ref("/reset").on("value", (snapshot) => {
+    var status = snapshot.val();
+    if(status) {
+        location.reload();
+    }
+});
+
+// Reset Game
+const resetState = {
+    "green" : {
+        "blocks" : 0,
+        "energy" : 100,
+        "health" : 100,
+        "hits" : 0,
+        "position" : {
+            "x" : 0,
+            "z" : 0
+        }
+    },
+    "purple" : {
+        "blocks" : 0,
+        "energy" : 100,
+        "health" : 100,
+        "hits" : 0,
+        "position" : {
+            "x" : 0,
+            "z" : 0
+        }
+    },
+    "reset" : true
+};
+
+function resetGame() {
+    database.ref("/").set(resetState, (error) => {
+        if(error) {
+            console.log(error);
+        }
+    });
+}

@@ -58,6 +58,32 @@
         <div class="line" id="touch-line" style="width: 0; height: 0; left: 0; top: 0;"></div>
     </div>
 
+    <div id="success-div" class="center-content-box" hidden>
+        <h1>Mission Success!</h1>
+
+        <div class="white-trans-bg">
+            <h3>Your team survived the attack!</h3>
+
+            <p>Your skills are outstanding, and we have great respect for your work. Congratulations!</p>
+            <br>
+
+            <button type="button" class="team-green" onclick="resetGame();">Reset Game</button>
+        </div>
+    </div>
+
+    <div id="failure-div" class="center-content-box" hidden>
+        <h1>Mission Failed!</h1>
+
+        <div class="white-trans-bg">
+            <h3>Your team did not survive the attack.</h3>
+
+            <p>Your ship has been destroyed due to the large number of asteroids that hit your ship! Better luck next time!</p>
+            <br>
+
+            <button type="button" class="team-green" onclick="resetGame();">Reset Game</button>
+        </div>
+    </div>
+
     <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-database.js"></script>
