@@ -5,6 +5,16 @@ document.addEventListener('touchend', handleTouchEnd, false);
 var xDown = null;
 var yDown = null;
 
+function toggleDebugMode() {
+    var debugDiv = document.getElementById("debug-div");
+    if(debugDiv.getAttribute("hidden") === null) {
+        debugDiv.setAttribute("hidden", true);
+    }
+    else {
+        debugDiv.removeAttribute("hidden");
+    }
+}
+
 function handleTouchStart(evt) {
     const firstTouch = evt.touches[0];
     xDown = firstTouch.clientX;
