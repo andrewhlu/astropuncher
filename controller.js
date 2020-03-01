@@ -154,3 +154,11 @@ function getEnergyUsage(xUp, yUp, xDown, yDown) {
         return Math.floor(45 * ((length - 100) / 400) + 5);
     }
 }
+
+// Remote Refresh
+database.ref("/refresh").on("value", (snapshot) => {
+    var status = snapshot.val();
+    if(status) {
+        location.reload();
+    }
+})
