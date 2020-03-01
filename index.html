@@ -44,8 +44,8 @@
 			<a-plane position="2.5 1 0" rotation="0 -90 0" width="5" height="2" src="#door" repeat></a-plane>
 			<a-plane position="-12.5 1 0" rotation="0 90 0" width="5" height="2" src="#door" repeat></a-plane>
 
-			<a-plane position="-5 0.25 0" rotation="0 90 0" metalness = "0.7" width="5" height="0.5" color="white" repeat></a-plane>
-			<a-plane position="-5 0.25 0" rotation="0 -90 0" metalness = "0.7" width="5" height="0.5" color="white" repeat></a-plane>
+			<a-plane position="-5 0.25 0" rotation="0 90 0" metalness="0.7" width="5" height="0.5" color="white" repeat></a-plane>
+			<a-plane position="-5 0.25 0" rotation="0 -90 0" metalness="0.7" width="5" height="0.5" color="white" repeat></a-plane>
 			
             <!-- Raised Edges -->
             <!-- 
@@ -65,13 +65,19 @@
 			<!-- Enemies -->
 			<a-entity generate-enemies id="enemies"></a-entity>
 			
-			<!-- Asteroid design-->
+			<!-- Asteroid Design -->
 			<a-entity id="asteroid" >
-				<a-sphere position="4 1 4" radius="0.25" src="images/asteroid.jpg"></a-sphere>
-			<!-- Enemy design -->
+                <a-sphere position="4 1 4" radius="0.25" src="images/asteroid.jpg"></a-sphere>
+                
+			<!-- Enemy Design -->
 			<a-entity id="enemy" >
 				<a-sphere position="0 1 0" color="white" rotation="180 0 180" radius="0.3" src="#alien"></a-sphere>
 				<a-cone position="0 0.7 0" color="#70AD47" radius-bottom="0.2" height="0.5"></a-cone>
+            </a-entity>
+            
+			<a-entity id="enemypurple" >
+				<a-sphere position="0 1 0" color="white" rotation="180 0 180" radius="0.3" src="images/alienpurple.jpg"></a-sphere>
+				<a-cone position="0 0.7 0" color="#924DA7" radius-bottom="0.2" height="0.5"></a-cone>
 			</a-entity>
         </a-scene>
         
