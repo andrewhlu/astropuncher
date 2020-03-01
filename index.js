@@ -15,6 +15,19 @@ var team = "none";
 var leftHandPos = {};
 var rightHandPos = {};
 
+// Function to get the other team
+function getOtherTeam() {
+    if (team === "green") {
+        return "purple";
+    }
+    else if(team === "purple") {
+        return "green";
+    }
+    else {
+        return "none";
+    }
+}
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
@@ -31,6 +44,7 @@ AFRAME.registerComponent("left-hand", {
 
                 var subText = document.querySelector("#sub-text");
                 subText.setAttribute("text", {value: "Joined Green Team"});
+                initializeEnemyGeneration();
                 setTimeout(() => {
                     subText.setAttribute("visible", false);
                 }, 5000);
@@ -53,6 +67,7 @@ AFRAME.registerComponent("right-hand", {
 
                 var subText = document.querySelector("#sub-text");
                 subText.setAttribute("text", {value: "Joined Purple Team"});
+                initializeEnemyGeneration();
                 setTimeout(() => {
                     subText.setAttribute("visible", false);
                 }, 5000);
@@ -72,140 +87,254 @@ AFRAME.registerComponent("text-display", {
     }
 });
 
-
-
 // Setup team specific game components once a team has been selected
-AFRAME.registerComponent('generate-asteroids', {
-    init: function() {
-        let asteroidEntity = this.el;
+function initializeEnemyGeneration() {
+    let asteroidEntity = document.querySelector("#asteroids");
 
-        database.ref("/green/asteroidSpawns").on("value", (snapshot) => {
-            var rawData = snapshot.val();
-            var rawDataKeys = Object.keys(rawData);
-            var asteroidData = rawData[rawDataKeys[rawDataKeys.length - 1]];
+    // Set up your team's asteroids
+    database.ref("/" + team + "/asteroidSpawns").on("value", (snapshot) => {
+        var rawData = snapshot.val();
+        var rawDataKeys = Object.keys(rawData);
+        var asteroidData = rawData[rawDataKeys[rawDataKeys.length - 1]];
 
-            // Starting position and rotation for alien
-            var position = {
-                x: 2,
-                y: 0.5,
-                z: 2.5 - 5*(asteroidData.position)
-            };
+        // Starting position and rotation for alien
+        var position = {
+            x: 2,
+            y: 0.5,
+            z: 2.5 - 5*(asteroidData.position)
+        };
 
-            var rotation = {
-                x: 0,
-                y: 0,
-                z: 0
-            };
+        var rotation = {
+            x: 0,
+            y: 0,
+            z: 0
+        };
 
-            // Alien Spawn
-            let newAlien = document.getElementById('alien-green').cloneNode(true);
-            newAlien.setAttribute("position", position);
-            newAlien.setAttribute("rotation", rotation);
-            newAlien.setAttribute('visible', true);
+        // Alien Spawn
+        let newAlien = document.getElementById("alien-" + team).cloneNode(true);
+        newAlien.setAttribute("position", position);
+        newAlien.setAttribute("rotation", rotation);
+        newAlien.setAttribute('visible', true);
 
-            // Asteroid Spawn
-            var fSpeed = Math.cos(asteroidData.angle);
-            var sSpeed = Math.sin(asteroidData.angle);
+        // Asteroid Spawn
+        var fSpeed = Math.cos(asteroidData.angle);
+        var sSpeed = Math.sin(asteroidData.angle);
 
-            var points = [];
-            var fDistance = 0;
-            var sDistance = position.z;
-            while(fDistance < 14) {
-                // Remember, moving right is equal to negative Z, and moving forward is equal to negative X!
-                var unitsToMove = sSpeed > 0 ? (2.5 - sDistance) / sSpeed : (2.5 + sDistance) / sSpeed * -1;
-                if(unitsToMove * fSpeed + fDistance >= 14) {
-                    // We will reach the back wall before reaching the side
-                    unitsToMove = (14 - fDistance) / fSpeed;
-                    var nextPoint = {
-                        x: position.x - 14,
-                        z: sSpeed * unitsToMove + sDistance
-                    };
-                    fDistance = 14;
-                    points.push(nextPoint);
-                }
-                else  {
-                    // We will hit the right side
-                    var nextPoint = {
-                        x: position.x - (fSpeed * unitsToMove) - fDistance,
-                        z: sSpeed * unitsToMove + sDistance
-                    };
-                    fDistance += (fSpeed * unitsToMove);
-                    sDistance = nextPoint.z;
-                    sSpeed *= -1;
-                    points.push(nextPoint);
-                }
+        var points = [];
+        var fDistance = 0;
+        var sDistance = position.z;
+        while(fDistance < 14) {
+            // Remember, moving right is equal to negative Z, and moving forward is equal to negative X!
+            var unitsToMove = sSpeed > 0 ? (2.5 - sDistance) / sSpeed : (2.5 + sDistance) / sSpeed * -1;
+            if(unitsToMove * fSpeed + fDistance >= 14) {
+                // We will reach the back wall before reaching the side
+                unitsToMove = (14 - fDistance) / fSpeed;
+                var nextPoint = {
+                    x: position.x - 14,
+                    z: sSpeed * unitsToMove + sDistance
+                };
+                fDistance = 14;
+                points.push(nextPoint);
             }
+            else  {
+                // We will hit the right side
+                var nextPoint = {
+                    x: position.x - (fSpeed * unitsToMove) - fDistance,
+                    z: sSpeed * unitsToMove + sDistance
+                };
+                fDistance += (fSpeed * unitsToMove);
+                sDistance = nextPoint.z;
+                sSpeed *= -1;
+                points.push(nextPoint);
+            }
+        }
 
-            var time = 1000;
-            var animations = [
-                {
-                    property: "position",
-                    from: position,
-                    to: {
-                        x: points[0].x,
-                        y: 0.5,
-                        z: points[0].z
-                    },
-                    dur: 2000,
-                    delay: time,
-                    easing: "linear"
-                }
-            ];
+        var time = 1000;
+        var animations = [
+            {
+                property: "position",
+                from: position,
+                to: {
+                    x: points[0].x,
+                    y: 0.5,
+                    z: points[0].z
+                },
+                dur: 2000,
+                delay: time,
+                easing: "linear"
+            }
+        ];
 
+        time += 2000;
+
+        for(var i = 1; i < points.length; i++) {
+            animations.push({
+                property: "position",
+                from: {
+                    x: animations[i-1].to.x,
+                    y: animations[i-1].to.y,
+                    z: animations[i-1].to.z
+                },
+                to: {
+                    x: points[i].x,
+                    y: 0.5,
+                    z: points[i].z
+                },
+                dur: 2000,
+                delay: time,
+                easing: "linear"
+            });
             time += 2000;
+        }
 
-            for(var i = 1; i < points.length; i++) {
-                animations.push({
-                    property: "position",
-                    from: {
-                        x: animations[i-1].to.x,
-                        y: animations[i-1].to.y,
-                        z: animations[i-1].to.z
-                    },
-                    to: {
-                        x: points[i].x,
-                        y: 0.5,
-                        z: points[i].z
-                    },
-                    dur: 2000,
-                    delay: time,
-                    easing: "linear"
-                });
-                time += 2000;
+        let newAsteroid = document.getElementById('asteroid').cloneNode(true);
+        newAsteroid.setAttribute("position", position);
+        newAsteroid.setAttribute("rotation", rotation);
+        newAsteroid.setAttribute("visible", true);
+        newAsteroid.setAttribute(team + "-asteroid", true);
+        for(var i = 0; i < animations.length; i++) {
+            newAsteroid.setAttribute('animation' + (i > 0 ? '__' + i : ''), animations[i]);
+        }
+        asteroidEntity.appendChild(newAlien);
+        asteroidEntity.appendChild(newAsteroid);
+        console.log("Asteroid spawned for team " + team + "!");
+
+        setTimeout(() => {
+            asteroidEntity.removeChild(newAlien);
+        }, 3000);
+
+        setTimeout(() => {
+            asteroidEntity.removeChild(newAsteroid);
+        }, time);
+    });
+
+    // Set up other team's asteroids
+    database.ref("/" + getOtherTeam() + "/asteroidSpawns").on("value", (snapshot) => {
+        var rawData = snapshot.val();
+        var rawDataKeys = Object.keys(rawData);
+        var asteroidData = rawData[rawDataKeys[rawDataKeys.length - 1]];
+
+        // Starting position and rotation for alien
+        var position = {
+            x: -12,
+            y: 0.5,
+            z: -2.5 + 5*(asteroidData.position)
+        };
+
+        var rotation = {
+            x: 0,
+            y: 180,
+            z: 0
+        };
+
+        // Alien Spawn
+        let newAlien = document.getElementById("alien-" + getOtherTeam()).cloneNode(true);
+        newAlien.setAttribute("position", position);
+        newAlien.setAttribute("rotation", rotation);
+        newAlien.setAttribute('visible', true);
+
+        // Asteroid Spawn
+        var fSpeed = Math.cos(asteroidData.angle);
+        var sSpeed = Math.sin(asteroidData.angle);
+
+        var points = [];
+        var fDistance = 0;
+        var sDistance = position.z;
+        while(fDistance < 14) {
+            // Remember, moving right is equal to positive Z, and moving forward is equal to positive X!
+            var unitsToMove = sSpeed > 0 ? (2.5 - sDistance) / sSpeed : (2.5 + sDistance) / sSpeed * -1;
+            if(unitsToMove * fSpeed + fDistance >= 14) {
+                // We will reach the back wall before reaching the side
+                unitsToMove = (14 - fDistance) / fSpeed;
+                var nextPoint = {
+                    x: position.x + 14,
+                    z: sSpeed * unitsToMove + sDistance
+                };
+                fDistance = 14;
+                points.push(nextPoint);
             }
-
-            let newAsteroid = document.getElementById('asteroid').cloneNode(true);
-            newAsteroid.setAttribute("position", position);
-            newAsteroid.setAttribute("rotation", rotation);
-            newAsteroid.setAttribute("visible", true);
-            newAsteroid.setAttribute("green-asteroid", true);
-            for(var i = 0; i < animations.length; i++) {
-                newAsteroid.setAttribute('animation' + (i > 0 ? '__' + i : ''), animations[i]);
+            else  {
+                // We will hit the right side
+                var nextPoint = {
+                    x: position.x + (fSpeed * unitsToMove) + fDistance,
+                    z: sSpeed * unitsToMove + sDistance
+                };
+                fDistance += (fSpeed * unitsToMove);
+                sDistance = nextPoint.z;
+                sSpeed *= -1;
+                points.push(nextPoint);
             }
-            asteroidEntity.appendChild(newAlien);
-            asteroidEntity.appendChild(newAsteroid);
-            console.log("Asteroid spawned!")
+        }
 
-            setTimeout(() => {
-                asteroidEntity.removeChild(newAlien);
-            }, 3000);
+        var time = 1000;
+        var animations = [
+            {
+                property: "position",
+                from: position,
+                to: {
+                    x: points[0].x,
+                    y: 0.5,
+                    z: points[0].z
+                },
+                dur: 2000,
+                delay: time,
+                easing: "linear"
+            }
+        ];
 
-            setTimeout(() => {
-                asteroidEntity.removeChild(newAsteroid);
+        time += 2000;
 
-                database.ref("/green/health").once("value", (snapshot) => {
-                    var health = snapshot.val();
-                    health -= 10;
-                    database.ref("/green/health").set(health, (error) => {
-                        if(error) {
-                            console.log(error);
-                        }
-                    })
+        for(var i = 1; i < points.length; i++) {
+            animations.push({
+                property: "position",
+                from: {
+                    x: animations[i-1].to.x,
+                    y: animations[i-1].to.y,
+                    z: animations[i-1].to.z
+                },
+                to: {
+                    x: points[i].x,
+                    y: 0.5,
+                    z: points[i].z
+                },
+                dur: 2000,
+                delay: time,
+                easing: "linear"
+            });
+            time += 2000;
+        }
+
+        let newAsteroid = document.getElementById('asteroid').cloneNode(true);
+        newAsteroid.setAttribute("position", position);
+        newAsteroid.setAttribute("rotation", rotation);
+        newAsteroid.setAttribute("visible", true);
+        newAsteroid.setAttribute(getOtherTeam() + "-asteroid", true);
+        for(var i = 0; i < animations.length; i++) {
+            newAsteroid.setAttribute('animation' + (i > 0 ? '__' + i : ''), animations[i]);
+        }
+        asteroidEntity.appendChild(newAlien);
+        asteroidEntity.appendChild(newAsteroid);
+        console.log("Asteroid spawned for team " + getOtherTeam() + "!");
+
+        setTimeout(() => {
+            asteroidEntity.removeChild(newAlien);
+        }, 3000);
+
+        setTimeout(() => {
+            asteroidEntity.removeChild(newAsteroid);
+        
+            database.ref("/" + team + "/health").once("value", (snapshot) => {
+                var health = snapshot.val();
+                health -= 10;
+                database.ref("/" + team + "/health").set(health, (error) => {
+                    if(error) {
+                        console.log(error);
+                    }
                 })
-            }, time);
-        });
-    }
-});
+            })
+        }, time);
+    });
+}
 
 AFRAME.registerComponent("green-asteroid", {
     init: function() {
@@ -213,7 +342,6 @@ AFRAME.registerComponent("green-asteroid", {
         var asteroid = this.el;
         
         if(team === "purple") {
-            console.log("Team green asteroid");
             var asteroidInterval = window.setInterval(() => {
                 var asteroidPosition = asteroid.object3D.position;
     
@@ -238,7 +366,6 @@ AFRAME.registerComponent("purple-asteroid", {
         var asteroid = this.el;
         
         if(team === "green") {
-            console.log("Team purple asteroid");
             var asteroidInterval = window.setInterval(() => {
                 var asteroidPosition = asteroid.object3D.position;
     
