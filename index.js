@@ -44,7 +44,12 @@ AFRAME.registerComponent("left-hand", {
 
                 var subText = document.querySelector("#sub-text");
                 subText.setAttribute("text", {value: "Joined Green Team"});
+
                 initializeEnemyGeneration();
+
+                document.querySelector("#home-play-area").setAttribute("color", "#70AD47");
+                document.querySelector("#enemy-play-area").setAttribute("color", "#924DA7");
+
                 setTimeout(() => {
                     subText.setAttribute("visible", false);
                 }, 5000);
@@ -67,7 +72,12 @@ AFRAME.registerComponent("right-hand", {
 
                 var subText = document.querySelector("#sub-text");
                 subText.setAttribute("text", {value: "Joined Purple Team"});
+
                 initializeEnemyGeneration();
+
+                document.querySelector("#home-play-area").setAttribute("color", "#924DA7");
+                document.querySelector("#enemy-play-area").setAttribute("color", "#70AD47");
+
                 setTimeout(() => {
                     subText.setAttribute("visible", false);
                 }, 5000);
