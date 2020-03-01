@@ -11,11 +11,12 @@
             <a-assets>
                 <img id="cage" src="Nicolas-Cage.jpg">
 				<img id="grass-7x1" src="images/grass-7x1.png">
-				<img id="angry" src="images/angry.jpg">
+				<img id="alien" src="images/alien.jpg">
 				<img id="space" src="images/space.jpg">
 				<img id="door" src="images/blastdoor.png">
 				<img id="panel" src="images/sidepanel.jpg">
 				<img id="floor" src="images/floor.jpg">
+			
             </a-assets>
 
 			<!-- Camera and Motion Controllers -->
@@ -42,9 +43,10 @@
 			<a-plane position="-5 1 -2.5" rotation="0 0 0" width="15" height="2" src="#panel" repeat></a-plane>
 			<a-plane position="2.5 1 0" rotation="0 -90 0" width="5" height="2" src="#door" repeat></a-plane>
 			<a-plane position="-12.5 1 0" rotation="0 90 0" width="5" height="2" src="#door" repeat></a-plane>
+
 			<a-plane position="-5 0.25 0" rotation="0 90 0" width="5" height="0.5" color="white" repeat></a-plane>
 			<a-plane position="-5 0.25 0" rotation="0 -90 0" width="5" height="0.5" color="white" repeat></a-plane>
-
+			
             <!-- Raised Edges -->
             <!-- 
             <a-plane position="0 0.35 -2.85" rotation="-45 0 0" width="7" height="1" src="#cage" repeat></a-plane>
@@ -62,10 +64,13 @@
 			
 			<!-- Enemies -->
 			<a-entity generate-enemies id="enemies"></a-entity>
-
+			
+			<!-- Asteroid design-->
+			<a-entity id="asteroid" >
+				<a-sphere position="4 1 4" radius="2.5" src="images/asteroid.jpg"></a-sphere>
 			<!-- Enemy design -->
-			<a-entity id="enemy" visible="false">
-				<a-sphere position="0 1 0" color="white" rotation="180 0 180" radius="0.3" src="#angry"></a-sphere>
+			<a-entity id="enemy" >
+				<a-sphere position="0 1 0" color="white" rotation="180 0 180" radius="0.3" src="#alien"></a-sphere>
 				<a-cone position="0 0.7 0" color="white" radius-bottom="0.2" height="0.5"></a-cone>
 			</a-entity>
 		</a-scene>
