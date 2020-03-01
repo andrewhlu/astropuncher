@@ -12,6 +12,9 @@ const firebaseConfig = {
 
 var team = "green";
 
+var leftHandPos = {};
+var rightHandPos = {};
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
@@ -125,6 +128,7 @@ AFRAME.registerComponent('generate-asteroids', {
             }
             asteroidEntity.appendChild(newAlien);
             asteroidEntity.appendChild(newAsteroid);
+            console.log("Asteroid spawned!")
 
             setTimeout(() => {
                 asteroidEntity.removeChild(newAlien);
@@ -146,3 +150,51 @@ AFRAME.registerComponent('generate-asteroids', {
         });
     }
 });
+
+AFRAME.registerComponent("green-asteroid", {
+    init: function() {
+        var threshold = 0.5;
+        var asteroid = this.el;
+        
+        var asteroidInterval = window.setInterval(() => {
+            var asteroidPosition = asteroid.object3D.position;
+
+            if(Math.abs(asteroidPosition.x - leftHandPos.x) < threshold && Math.abs(asteroidPosition.z - leftHandPos.z) < threshold) {
+                console.log("Hit! Left Hand");
+                clearInterval(asteroidInterval);
+                asteroid.parentNode.removeChild(asteroid);
+            }
+            else if(Math.abs(asteroidPosition.x - rightHandPos.x) < threshold && Math.abs(asteroidPosition.z - rightHandPos.z) < threshold) {
+                console.log("Hit! Right Hand");
+                clearInterval(asteroidInterval);
+                asteroid.parentNode.removeChild(asteroid);
+            }
+        }, 100);
+    }
+});
+
+AFRAME.registerComponent("left-hand", {
+    init: function() {
+        console.log("Initialized left hand");
+    },
+    tick: function() {
+        leftHandPos =  this.el.getAttribute("position");
+    }
+});
+
+AFRAME.registerComponent("right-hand", {
+    init: function() {
+        console.log("Initialized right hand");
+    },
+    tick: function() {
+        rightHandPos =  this.el.getAttribute("position");
+    }
+});
+
+// AFRAME.registerComponent("text-display", {
+//     tick: function() {
+//         this.el.setAttribute("text", {
+//             value: "Left: X: " + parseFloat(leftHandPos.x).toFixed(2) + ", Y: " + parseFloat(leftHandPos.y).toFixed(2) + ", Z: " + parseFloat(leftHandPos.z).toFixed(2)
+//         });
+//     }
+// })

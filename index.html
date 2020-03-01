@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Test</title>
+		<title>AstroPuncher</title>
 
 		<script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
 	</head>
 	<body>
+		<!-- Firebase Scripts -->
+		<script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-database.js"></script>
+
+		<!-- Custom Scripts -->
+		<script src="index.js"></script>
+
+		<!-- A-Frame Scene -->
 		<a-scene>
             <!-- Game Assets -->
             <a-assets>
@@ -22,16 +30,16 @@
 			<a-entity id="camera-rig">
 				<a-entity id="camera" camera position="0 1.6 0" look-controls wasd-controls rotation="0 -90 0" position-display camera-listener>
 					<!-- Text -->
-					<a-entity id="title-text" position="0 1.25 -3" text="align: center; value: Dodge the Asteroids!; width: 6; side: double;"></a-entity>
+					<a-entity id="title-text" position="0 1.25 -3" text="align: center; value: Punch the Asteroids!; width: 6; side: double;"></a-entity>
 					<a-entity id="health-ui" position="0 2.3 -3" text="align: center; value: 3/3; width: 6; side: double;"></a-entity>
 					<a-entity id="sub-text" position="0 1.25 -4" text="align: center; value: ; width: 5; side: double;" text-display></a-entity>
 					<a-entity visible="false" id="position-text" position="0 -3 -3" text="align: center; value: Rotation; width: 10; side: double;"></a-entity>
 					<a-entity visible="false" id="thumbstick-text" position="0 -3.5 -3" text="align: center; value: Thumbstick; width: 10; side: double;"></a-entity>
 				</a-entity>
-				<a-entity windows-motion-controls="hand: left" move id="leftHandWMR" hand-controls="left" mixin="controller"></a-entity>
-				<a-entity windows-motion-controls="hand: right" move id="rightHandWMR" hand-controls="right" mixin="controller"></a-entity>
-				<a-entity vive-controls="hand: left" move id="leftHandVive" hand-controls="left" mixin="controller"></a-entity>
-				<a-entity vive-controls="hand: right" move id="rightHandVive" hand-controls="right" mixin="controller"></a-entity>
+				<a-entity windows-motion-controls="hand: left" move id="leftHand" hand-controls="left" mixin="controller" left-hand></a-entity>
+				<a-entity windows-motion-controls="hand: right" move id="rightHand" hand-controls="right" mixin="controller"right-hand></a-entity>
+				<a-entity vive-controls="hand: left" move id="leftHand" hand-controls="left" mixin="controller" left-hand></a-entity>
+				<a-entity vive-controls="hand: right" move id="rightHand" hand-controls="right" mixin="controller" right-hand></a-entity>
 			</a-entity>
 
 			<!-- Base Plane (Playing Field) -->
@@ -83,12 +91,5 @@
 				<a-cone position="0 0.7 0" color="#924DA7" radius-bottom="0.2" height="0.5"></a-cone>
 			</a-entity>
         </a-scene>
-        
-        <!-- Firebase Scripts -->
-        <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-database.js"></script>
-
-        <!-- Custom Scripts -->
-        <script src="index.js"></script>
 	</body>
 </html>
