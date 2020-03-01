@@ -74,3 +74,33 @@ hr {
     position: fixed;
     border: 1px solid black;
 }
+
+.game-board-div {
+    position: absolute;
+    left: calc((100vw - 600px) / 2);
+    width: 600px;
+    text-align: center;
+}
+
+.block-area {
+    height: 600px;
+    width: 100%;
+}
+
+.block-area img {
+    height: 100%;
+    width: 100%
+}
+
+.play-area {
+    height: 100px;
+    background: #ff3333;
+    opacity: 0.5;
+}
+
+.play-area h1 {
+    text-align: center;
+    margin: 0;
+    padding: 30px;
+    font-size: 40px;
+}
