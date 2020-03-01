@@ -171,7 +171,8 @@ function initializeGame() {
                 unitsToMove = (14 - fDistance) / fSpeed;
                 var nextPoint = {
                     x: position.x - 14,
-                    z: sSpeed * unitsToMove + sDistance
+                    z: sSpeed * unitsToMove + sDistance,
+                    time: unitsToMove / (asteroidData.energy + 5) * 10
                 };
                 fDistance = 14;
                 points.push(nextPoint);
@@ -180,7 +181,8 @@ function initializeGame() {
                 // We will hit the right side
                 var nextPoint = {
                     x: position.x - (fSpeed * unitsToMove) - fDistance,
-                    z: sSpeed * unitsToMove + sDistance
+                    z: sSpeed * unitsToMove + sDistance,
+                    time: unitsToMove / (asteroidData.energy + 5) * 10
                 };
                 fDistance += (fSpeed * unitsToMove);
                 sDistance = nextPoint.z;
@@ -199,13 +201,13 @@ function initializeGame() {
                     y: 0.5,
                     z: points[0].z
                 },
-                dur: 2000,
+                dur: points[0].time * 1000,
                 delay: time,
                 easing: "linear"
             }
         ];
 
-        time += 2000;
+        time += (points[0].time * 1000);
 
         for(var i = 1; i < points.length; i++) {
             animations.push({
@@ -220,11 +222,11 @@ function initializeGame() {
                     y: 0.5,
                     z: points[i].z
                 },
-                dur: 2000,
+                dur: points[i].time * 1000,
                 delay: time,
                 easing: "linear"
             });
-            time += 2000;
+            time += (points[i].time * 1000);
         }
 
         let newAsteroid = document.getElementById('asteroid').cloneNode(true);
@@ -288,7 +290,8 @@ function initializeGame() {
                 unitsToMove = (14 - fDistance) / fSpeed;
                 var nextPoint = {
                     x: position.x + 14,
-                    z: sSpeed * unitsToMove + sDistance
+                    z: sSpeed * unitsToMove + sDistance,
+                    time: unitsToMove / (asteroidData.energy + 5) * 10
                 };
                 fDistance = 14;
                 points.push(nextPoint);
@@ -297,7 +300,8 @@ function initializeGame() {
                 // We will hit the right side
                 var nextPoint = {
                     x: position.x + (fSpeed * unitsToMove) + fDistance,
-                    z: sSpeed * unitsToMove + sDistance
+                    z: sSpeed * unitsToMove + sDistance,
+                    time: unitsToMove / (asteroidData.energy + 5) * 10
                 };
                 fDistance += (fSpeed * unitsToMove);
                 sDistance = nextPoint.z;
@@ -316,13 +320,13 @@ function initializeGame() {
                     y: 0.5,
                     z: points[0].z
                 },
-                dur: 2000,
+                dur: points[0].time * 1000,
                 delay: time,
                 easing: "linear"
             }
         ];
 
-        time += 2000;
+        time += (points[0].time * 1000);
 
         for(var i = 1; i < points.length; i++) {
             animations.push({
@@ -337,11 +341,11 @@ function initializeGame() {
                     y: 0.5,
                     z: points[i].z
                 },
-                dur: 2000,
+                dur: points[i].time * 1000,
                 delay: time,
                 easing: "linear"
             });
-            time += 2000;
+            time += (points[i].time * 1000);
         }
 
         let newAsteroid = document.getElementById('asteroid').cloneNode(true);
