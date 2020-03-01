@@ -212,20 +212,47 @@ AFRAME.registerComponent("green-asteroid", {
         var threshold = 0.5;
         var asteroid = this.el;
         
-        var asteroidInterval = window.setInterval(() => {
-            var asteroidPosition = asteroid.object3D.position;
-
-            if(Math.abs(asteroidPosition.x - leftHandPos.x) < threshold && Math.abs(asteroidPosition.z - leftHandPos.z) < threshold) {
-                console.log("Hit! Left Hand");
-                clearInterval(asteroidInterval);
-                asteroid.parentNode.removeChild(asteroid);
-            }
-            else if(Math.abs(asteroidPosition.x - rightHandPos.x) < threshold && Math.abs(asteroidPosition.z - rightHandPos.z) < threshold) {
-                console.log("Hit! Right Hand");
-                clearInterval(asteroidInterval);
-                asteroid.parentNode.removeChild(asteroid);
-            }
-        }, 100);
+        if(team === "purple") {
+            console.log("Team green asteroid");
+            var asteroidInterval = window.setInterval(() => {
+                var asteroidPosition = asteroid.object3D.position;
+    
+                if(Math.abs(asteroidPosition.x - leftHandPos.x) < threshold && Math.abs(asteroidPosition.z - leftHandPos.z) < threshold) {
+                    console.log("Hit a green asteroid! Left Hand");
+                    clearInterval(asteroidInterval);
+                    asteroid.parentNode.removeChild(asteroid);
+                }
+                else if(Math.abs(asteroidPosition.x - rightHandPos.x) < threshold && Math.abs(asteroidPosition.z - rightHandPos.z) < threshold) {
+                    console.log("Hit a green asteroid! Right Hand");
+                    clearInterval(asteroidInterval);
+                    asteroid.parentNode.removeChild(asteroid);
+                }
+            }, 100);
+        }
     }
 });
 
+AFRAME.registerComponent("purple-asteroid", {
+    init: function() {
+        var threshold = 0.5;
+        var asteroid = this.el;
+        
+        if(team === "green") {
+            console.log("Team purple asteroid");
+            var asteroidInterval = window.setInterval(() => {
+                var asteroidPosition = asteroid.object3D.position;
+    
+                if(Math.abs(asteroidPosition.x - leftHandPos.x) < threshold && Math.abs(asteroidPosition.z - leftHandPos.z) < threshold) {
+                    console.log("Hit a purple asteroid! Left Hand");
+                    clearInterval(asteroidInterval);
+                    asteroid.parentNode.removeChild(asteroid);
+                }
+                else if(Math.abs(asteroidPosition.x - rightHandPos.x) < threshold && Math.abs(asteroidPosition.z - rightHandPos.z) < threshold) {
+                    console.log("Hit a purple asteroid! Right Hand");
+                    clearInterval(asteroidInterval);
+                    asteroid.parentNode.removeChild(asteroid);
+                }
+            }, 100);
+        }
+    }
+});
