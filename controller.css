@@ -39,6 +39,50 @@ hr {
     right: 10px;
 }
 
+/* General Bar CSS */
+.bar {
+    position: fixed;
+    top: 0;
+    width: 60px;
+    height: 100vh;
+}
+
+.bar p {
+    position: fixed;
+    top: calc(50vh - 10px);
+    width: 60px;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    font-family: "Avenir";
+}
+
+.bar .inner {
+    width: 60px;
+    background-color: grey;
+}
+
+/* Health Bar */
+.health-bar {
+    left: 0;
+    background-color: red;
+}
+
+.health-bar p {
+    left: 0;
+}
+
+/* Energy Bar */
+.energy-bar {
+    right: 0;
+    background-color: #fab725;
+}
+
+.energy-bar p {
+    right: 0;
+}
+
+/* White Box */
 .center-content-box {
 	width: 500px;
 	position: absolute;

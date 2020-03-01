@@ -10,6 +10,46 @@ const firebaseConfig = {
     measurementId: "G-7YHG475TJB"
 };
 
+var team = "green";
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-firebase.analytics();
+var database = firebase.database();
+
+AFRAME.registerComponent('generate-asteroids', {
+    init: function() {
+        let asteroidEntity = this.el;
+
+        database.ref("/" + team + "/asteroidSpawns").on("value", (snapshot) => {
+            var rawData = snapshot.val();
+            var rawDataKeys = Object.keys(rawData);
+            var asteroidData = rawData[rawDataKeys[rawDataKeys.length - 1]];
+
+            var position = {
+                x: 2,
+                y: 0.5,
+                z: 2.5 - 5*(asteroidData.position)
+            };
+
+            console.log(position);
+
+            var rotation = {
+                x: 0,
+                y: 0,
+                z: 0
+            };
+
+            let newAlien = document.getElementById('alien-green').cloneNode(true);
+            newAlien.setAttribute("position", position);
+            newAlien.setAttribute("rotation", rotation);
+            newAlien.setAttribute('visible', true);
+
+            asteroidEntity.appendChild(newAlien);
+            console.log("Spawned new alien");
+
+            setTimeout(() => {
+                asteroidEntity.removeChild(newAlien);
+            }, 10000);
+        });
+    }
+});

@@ -62,20 +62,22 @@
             <!-- Sky -->
 			<a-sky src="#space" rotation="-90 180 -45"></a-sky>
 			
-			<!-- Enemies -->
-			<a-entity generate-enemies id="enemies"></a-entity>
+			<!-- Entities to generate asteroids and aliens -->
+            <a-entity generate-asteroids id="asteroids"></a-entity>
 			
 			<!-- Asteroid Design -->
-			<a-entity id="asteroid" >
-                <a-sphere position="4 1 4" radius="0.25" src="images/asteroid.jpg"></a-sphere>
+			<a-entity id="asteroid" visible="false">
+				<a-sphere position="4 1 4" radius="0.25" src="images/asteroid.jpg"></a-sphere>
+			</a-entity>
                 
-			<!-- Enemy Design -->
-			<a-entity id="enemy" >
+			<!-- Green Alien Design -->
+			<a-entity id="alien-green" visible="false">
 				<a-sphere position="0 1 0" color="white" rotation="180 0 180" radius="0.3" src="#alien"></a-sphere>
 				<a-cone position="0 0.7 0" color="#70AD47" radius-bottom="0.2" height="0.5"></a-cone>
             </a-entity>
-            
-			<a-entity id="enemypurple" >
+			
+			<!-- Purple Alien Design -->
+			<a-entity id="alien-purple" visible="false">
 				<a-sphere position="0 1 0" color="white" rotation="180 0 180" radius="0.3" src="images/alienpurple.jpg"></a-sphere>
 				<a-cone position="0 0.7 0" color="#924DA7" radius-bottom="0.2" height="0.5"></a-cone>
 			</a-entity>
