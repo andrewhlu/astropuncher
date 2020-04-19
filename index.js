@@ -15,6 +15,12 @@ var team = "none";
 var leftHandPos = {};
 var rightHandPos = {};
 
+var alarmAudio = new Audio("audio/alarm.m4a");
+var interstellarAudio = new Audio("audio/interstellar.mp3");
+var missionAudio = new Audio("audio/blockasteroid.oga");
+alarmAudio.volume = 0.5;
+interstellarAudio.loop = true;
+
 // Function to get the other team
 function getOtherTeam() {
     if (team === "green") {
@@ -90,6 +96,9 @@ AFRAME.registerComponent("text-display", {
 
 // Setup team specific game components once a team has been selected
 function initializeGame() {
+    interstellarAudio.play();
+    missionAudio.play();
+
     let asteroidEntity = document.querySelector("#asteroids");
     let titleText = document.querySelector("#title-text");
     let subText = document.querySelector("#sub-text");
@@ -98,17 +107,24 @@ function initializeGame() {
     database.ref("/" + team + "/health").on("value", (snapshot) => {
         var health = snapshot.val();
         subText.setAttribute("text", {value: "Health: " + Math.floor(health) + "%"});
-
+        if(health <= 20) {
+            alarmAudio.play();
+        }
         if(health <= 0) {
             titleText.setAttribute("text", {value: "Mission Failed!"});
+            alarmAudio.pause();
         }
     });
 
     // Check for win condition
     database.ref("/" + getOtherTeam() + "/health").on("value", (snapshot) => {
         var health = snapshot.val();
+        if(health <= 20) {
+            alarmAudio.play();
+        }
         if(health <= 0) {
             titleText.setAttribute("text", {value: "Mission Success!"});
+            alarmAudio.pause();
         }
     });
 
